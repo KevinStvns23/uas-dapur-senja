@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 interface Menu {
   id: number;
@@ -110,21 +111,21 @@ export default function MenuPage() {
         <div className="logo">Dapur Senja</div>
         <ul className="nav-links">
           <li>
-            <a href="/">Home</a>
+            <Link href="/">Home</Link>
           </li>
           <li>
-            <a href="/menu" className="active">
+            <Link href="/menu" className="active">
               Menu
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/promo">Promo & Info</a>
+            <Link href="/promo">Promo & Info</Link>
           </li>
           <li>
-            <a href="/booking">Reservation</a>
+            <Link href="/booking">Reservation</Link>
           </li>
           <li>
-            <a href="/profile">Account</a>
+            <Link href="/profile">Account</Link>
           </li>
         </ul>
       </nav>
@@ -201,26 +202,28 @@ export default function MenuPage() {
           filteredData.map((item) => (
             <div key={item.id} className="menu-card">
               {item.rating >= 4.8 && <span className="recommended-badge">🔥 Top Rating</span>}
-              <a href={`/menu/${item.id}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                <img src={`/${item.image}`} alt={item.name} />
-                <div className="menu-info">
-                  <h3>{item.name}</h3>
-                  <p className="price">{formatRupiah(item.price)}</p>
-                  <p className="rating">⭐ {item.rating}</p>
-                  <div className="card-footer">
-                    <span>{item.category.replace("-", " ")}</span>
-                    <button
-                      className="order-btn"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleOrder(item.name);
-                      }}
-                    >
-                      + Pesan
-                    </button>
+              <Link href={`/menu/${item.id}`} passHref style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                <div style={{ cursor: "pointer" }}>
+                  <img src={`/${item.image}`} alt={item.name} />
+                  <div className="menu-info">
+                    <h3>{item.name}</h3>
+                    <p className="price">{formatRupiah(item.price)}</p>
+                    <p className="rating">⭐ {item.rating}</p>
+                    <div className="card-footer">
+                      <span>{item.category.replace("-", " ")}</span>
+                      <button
+                        className="order-btn"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleOrder(item.name);
+                        }}
+                      >
+                        + Pesan
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           ))
         )}
