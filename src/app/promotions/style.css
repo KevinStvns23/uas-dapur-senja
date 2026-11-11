@@ -132,3 +132,12 @@ button:hover { background-color: #e07b00; }
     .navbar { flex-direction: column; gap: 10px; }
     .nav-links { flex-wrap: wrap; justify-content: center; }
 }
+
+.promo-card h2 {
+    font-weight: bold !important;
+}
+
+.promo-card strong {
+    font-weight: bold !important;
+    color: #333 !important;
+}
