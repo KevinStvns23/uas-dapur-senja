@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 
 export async function GET() {
   try {
@@ -18,12 +18,13 @@ export async function POST(request: Request) {
         name: body.name,
         category: body.category,
         price: Number(body.price),
-        rating: Number(body.rating),
-        image: body.image,
         desc: body.desc,
-        ingredients: body.ingredients,
+        image: body.image,
+        rating: 0, 
+        ingredients: body.desc,
       },
     });
+
     return NextResponse.json(newMenu, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Gagal menyimpan data menu" }, { status: 500 });
