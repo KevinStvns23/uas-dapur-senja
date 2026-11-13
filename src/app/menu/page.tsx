@@ -15,18 +15,32 @@ interface Menu {
   ingredients: string;
 }
 
+interface OrderItem {
+  id: number;
+  name: string;
+  price: number;
+  qty: number;
+}
+
 export default function MenuPage() {
   const [menuData, setMenuData] = useState<Menu[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentCategory, setCurrentCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortType, setSortType] = useState("default");
-  const [totalOrders, setTotalOrders] = useState(0);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastItem, setToastItem] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [confirmedCount, setConfirmedCount] = useState(0);
+  const [confirmedTotal, setConfirmedTotal] = useState(0);
 
   useEffect(() => {
-    const savedOrders = localStorage.getItem("restaurantOrders");
-    if (savedOrders) {
-      setTotalOrders(parseInt(savedOrders, 10));
+    const savedItems = localStorage.getItem("restaurantOrderItems");
+    if (savedItems) {
+      setOrderItems(JSON.parse(savedItems));
     }
 
     const handleScroll = () => {
@@ -47,10 +61,25 @@ export default function MenuPage() {
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadDataFromAPI();
   }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showToast) {
+      timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [showToast]);
+
+  const totalOrders = orderItems.reduce((sum, item) => sum + item.qty, 0);
+  const totalPrice = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const formatRupiah = (number: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -60,16 +89,39 @@ export default function MenuPage() {
     }).format(number);
   };
 
-  const handleOrder = (itemName: string) => {
-    const newTotal = totalOrders + 1;
-    setTotalOrders(newTotal);
+  const handleOrder = (menu: Menu) => {
+    const existingIndex = orderItems.findIndex((item) => item.id === menu.id);
+    let updatedItems: OrderItem[];
+
+    if (existingIndex > -1) {
+      updatedItems = [...orderItems];
+      updatedItems[existingIndex].qty += 1;
+    } else {
+      updatedItems = [
+        ...orderItems,
+        { id: menu.id, name: menu.name, price: menu.price, qty: 1 },
+      ];
+    }
+
+    const newTotal = updatedItems.reduce((sum, item) => sum + item.qty, 0);
+    setOrderItems(updatedItems);
+    localStorage.setItem("restaurantOrderItems", JSON.stringify(updatedItems));
     localStorage.setItem("restaurantOrders", newTotal.toString());
-    alert(`Berhasil menambahkan "${itemName}" ke pesanan!`);
+    setToastItem(menu.name);
+    setShowToast(true);
   };
 
-  const handleCheckout = () => {
-    alert(`Terima kasih! Total ada ${totalOrders} item yang akan diproses.`);
-    setTotalOrders(0);
+  const handleOpenConfirm = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmCheckout = () => {
+    setConfirmedCount(totalOrders);
+    setConfirmedTotal(totalPrice);
+    setShowConfirmModal(false);
+    setShowSuccessModal(true);
+    setOrderItems([]);
+    localStorage.removeItem("restaurantOrderItems");
     localStorage.removeItem("restaurantOrders");
   };
 
@@ -102,7 +154,7 @@ export default function MenuPage() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pacifico&family=Playfair+Display:wght@600;700&display=swap"
           rel="stylesheet"
         />
       </Head>
@@ -191,20 +243,22 @@ export default function MenuPage() {
           <span>
             Pesanan Dipilih: <strong>{totalOrders}</strong> item
           </span>
-          <button onClick={handleCheckout}>Pesan</button>
+          <button onClick={handleOpenConfirm}>Pesan</button>
         </div>
       )}
 
-      <main className="menu-container">
-        {filteredData.length === 0 ? (
+      <main className="menu-container" style={{ minHeight: "60vh" }}>
+        {isLoading ? (
+          <div className="empty-state">Memuat hidangan spesial...</div>
+        ) : filteredData.length === 0 ? (
           <div className="empty-state">Maaf, menu yang Anda cari tidak ditemukan.</div>
         ) : (
           filteredData.map((item) => (
             <div key={item.id} className="menu-card">
               {item.rating >= 4.8 && <span className="recommended-badge">🔥 Top Rating</span>}
-              <Link href={`/menu/${item.id}`} passHref style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                <div style={{ cursor: "pointer" }}>
-                  <img src={`/${item.image}`} alt={item.name} />
+              <Link href={`/menu/${item.id}`} passHref className="menu-card-link">
+                <div className="menu-card-clickable">
+                  <img src={`/${item.image}`} alt={item.name} loading="lazy" />
                   <div className="menu-info">
                     <h3>{item.name}</h3>
                     <p className="price">{formatRupiah(item.price)}</p>
@@ -215,7 +269,7 @@ export default function MenuPage() {
                         className="order-btn"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleOrder(item.name);
+                          handleOrder(item);
                         }}
                       >
                         + Pesan
@@ -237,6 +291,93 @@ export default function MenuPage() {
       >
         ↑
       </button>
+
+      <div className={`toast-notification ${showToast ? "show" : ""}`}>
+        <div className="toast-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div>
+          <p className="toast-title">Berhasil Ditambahkan!</p>
+          <p className="toast-message">{toastItem} masuk ke pesanan Anda.</p>
+        </div>
+      </div>
+
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="confirm-modal-box">
+            <div className="confirm-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <h3 className="confirm-title">Konfirmasi Pesanan</h3>
+            <p className="confirm-text" style={{ marginBottom: "16px" }}>
+              Berikut adalah daftar hidangan yang Anda pilih:
+            </p>
+            <div className="confirm-order-list">
+              <div className="confirm-items-scroll">
+                {orderItems.map((order) => (
+                  <div key={order.id} className="confirm-order-item">
+                    <div className="confirm-item-info">
+                      <span className="confirm-item-qty">{order.qty}x</span>
+                      <span className="confirm-item-name">{order.name}</span>
+                    </div>
+                    <span className="confirm-item-price">
+                      {formatRupiah(order.price * order.qty)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="confirm-order-total">
+                <span>Total Harga ({totalOrders} item)</span>
+                <strong>{formatRupiah(totalPrice)}</strong>
+              </div>
+            </div>
+            <div className="confirm-actions">
+              <button onClick={() => setShowConfirmModal(false)} className="btn-cancel">
+                Batal
+              </button>
+              <button onClick={handleConfirmCheckout} className="btn-confirm">
+                Ya, Pesan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSuccessModal && (
+        <div className="modal-overlay dark">
+          <div className="success-modal-box">
+            <div className="success-header">
+              <div className="success-logo">Dapur Senja</div>
+              <div className="success-subtitle">Authentic Culinary & Warmth</div>
+            </div>
+            <div className="success-body">
+              <div className="success-badge">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h2 className="success-title">Terima Kasih!</h2>
+              <p className="success-status">✦ Pesanan Anda Sedang Disiapkan ✦</p>
+              <div className="success-summary">
+                <span className="summary-label">Ringkasan Pembayaran ({confirmedCount} Hidangan)</span>
+                <span className="summary-total">{formatRupiah(confirmedTotal)}</span>
+              </div>
+              <p className="success-quote">
+                &ldquo;Setiap hidangan kami racik dengan sepenuh hati untuk menemani hangatnya momen Anda di Dapur Senja. Mohon tunggu sejenak, pesanan akan segera kami sajikan.&rdquo;
+              </p>
+              <button onClick={() => setShowSuccessModal(false)} className="btn-finish">
+                Selesai & Kembali ke Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
