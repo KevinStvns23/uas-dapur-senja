@@ -178,7 +178,7 @@ export default function GalleryPage() {
         <div id="food-modal" className={`modal ${modalData.isOpen ? 'show-animasi' : ''}`} style={{ display: modalData.isOpen ? 'flex' : 'none' }}>
           <div className="modal-content">
             <button className="close-btn" onClick={closeModal}>X</button>
-            <img id="modal-img" src={modalData.imgSrc} alt="Menu Foto" />
+            {modalData.imgSrc && <img id="modal-img" src={modalData.imgSrc} alt="Menu Foto" />}
             <div className="modal-text">
               <h2 id="modal-title">{modalData.title}</h2>
               <p id="modal-desc">{modalData.desc}</p>
