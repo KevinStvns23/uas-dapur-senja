@@ -27,31 +27,8 @@ export default function Booking() {
     setAcara("");
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setPesan("");
-
-    try {
-      const res = await fetch("/api/booking", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nama, noTelp, email, tanggal, jumlahOrang, acara }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        setPesan(errorData.error ?? "Gagal menyimpan");
-        return;
-      }
-
-      setPesan("Booking berhasil disimpan!");
-      resetForm();
-    } catch {
-      setPesan("Tidak bisa terhubung ke server");
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = () => {
+    router.push("/SistemBooking/BookingConfirmation");
   };
 
   const handleCancel = () => {
@@ -95,4 +72,4 @@ export default function Booking() {
     </div>
     </>
   );
-}
+  }
