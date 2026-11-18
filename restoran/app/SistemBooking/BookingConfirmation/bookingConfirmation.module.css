@@ -1,0 +1,103 @@
+.halaman {
+    background-image: url('/img/PageBookingConfirm.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding-bottom: 120px;  
+    box-sizing: border-box;
+}
+
+.title {
+    font-family: var(--font-judul), serif;
+    position: relative;
+    left: 30%;
+    top: 40px;
+}
+
+.subtitle {
+    font-family: var(--font-isi), sans-serif;
+    position: relative;
+    left: 30%;
+    top: 60px;
+}
+
+.booking {
+    position: relative;   
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    width: 60%;
+    margin: 100px auto 40px;
+    background-color: white;
+}
+
+.booking::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -10px;
+    width: 200px;
+    height: 200px;
+    background: url('/img/bg-bookingconfirm.png') no-repeat center / contain;
+    transform: rotate(190deg);
+    pointer-events: none;
+}
+
+.booking::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: 0px;
+    width: 200px;
+    height: 200px;
+    background: url('/img/bg-bookingconfirm.png') no-repeat center / contain;
+    transform: rotate(15deg);  
+    pointer-events: none;
+}
+
+.booking li {
+    border-bottom: 1px solid black;
+}
+
+.booking li:last-child {
+    border-bottom: none;
+}
+
+.kol {
+    display: flex;
+}
+
+.kol ul {
+    list-style: none;
+}
+
+.kol ul:first-child {
+    border-right: none;
+}
+
+.buttons {
+    position: relative;
+    left: 70%;
+
+}
+
+.submit {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.cancel {
+    position: relative;
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    left: 3%;
+}
+
+
+

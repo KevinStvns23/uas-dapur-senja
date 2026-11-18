@@ -51,17 +51,22 @@ function BookingConfirmation() {
 
   return (
     <>
+    <h1 className={styles.title}>Booking Confirmation</h1>
+    <p className={styles.subtitle}>Silahkan lihat kembali data anda sebelum konfirmasi</p>
     <div className={styles.booking}>
       <div className={styles.page}>
-        <h1 className={styles.title}>Booking Confirmation</h1>
+        <div className={styles.kol}>
         <ul>
-            <li>Nama: {nama}</li>
-            <li>No Telepon: {noTelp}</li>
-            <li>Email: {email}</li>
-            <li>Tanggal: {tanggal}</li>
-            <li>Jumlah Orang: {jumlahOrang}</li>
-            <li>Acara: {acara}</li>
+            <li>👤 Nama: {nama}</li>
+            <li>📞 No Telepon: {noTelp}</li>
+            <li>✉️ Email: {email}</li>
         </ul>
+        <ul>
+            <li>📅 Tanggal: {tanggal}</li>
+            <li>👥 Jumlah Orang: {jumlahOrang}</li>
+            <li>🎉 Acara: {acara}</li>
+        </ul>
+        </div>
           <div className={styles.buttons}>
           <button className={styles.submit} type="submit" disabled={loading}>
             {loading ? "Menyimpan..." : "Booking"}
@@ -72,6 +77,7 @@ function BookingConfirmation() {
         
 
         {pesan && <p>{pesan}</p>}
+        
       </div>
     </div>
     </>
@@ -80,11 +86,11 @@ function BookingConfirmation() {
 
 export default function confirmAgain() {
     return (
-    <>
+    <div className={styles.halaman}>
     <NavbarComponent />
     <Suspense fallback={<div>Loading...</div>}>
     <BookingConfirmation />
     </Suspense>
-    </>
+    </div>
     );
 }
