@@ -1,34 +1,26 @@
 "use client";
 
 import styles from "./bookingConfirmation.module.css";
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavbarComponent from "@/app/components/navbar";
 
-export default function BookingConfirmation() {
+function BookingConfirmation() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [nama, setName] = useState("");
-  const [noTelp, setNoTelp] = useState("");
-  const [email, setEmail] = useState("");
-  const [tanggal, setTanggal] = useState("");
-  const [jumlahOrang, setJumlahOrang] = useState(1);
-  const [acara, setAcara] = useState("");
+  const nama = searchParams.get("nama") ?? "";
+  const noTelp = searchParams.get("noTelp") ?? "";
+  const email = searchParams.get("email") ?? "";
+  const tanggal = searchParams.get("tanggal") ?? "";
+  const jumlahOrang = Number(searchParams.get("jumlahOrang")) || 1;
+  const acara = searchParams.get("acara") ?? "";
+
   const [loading, setLoading] = useState(false);
   const [pesan, setPesan] = useState("");
 
-  const resetForm = () => {
-    setName("");
-    setNoTelp("");
-    setEmail("");
-    setTanggal("");
-    setJumlahOrang(1);
-    setAcara("");
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleconfirm = async () => {
     setLoading(true);
     setPesan("");
 
@@ -43,11 +35,8 @@ export default function BookingConfirmation() {
         const errorData = await res.json();
         setPesan(errorData.error ?? "Gagal menyimpan");
         return;
-      }
-
-      setPesan("Booking berhasil disimpan!");
-      resetForm();
-      
+    }
+      setPesan("Booking berhasil!");  
     } catch {
       setPesan("Tidak bisa terhubung ke server");
     } finally {
@@ -56,39 +45,30 @@ export default function BookingConfirmation() {
   };
 
   const handleCancel = () => {
-    resetForm();
     setPesan("");
-    router.push("/SistemBooking/reservasi");
+    router.push("/SistemBooking/booking");
   };
 
   return (
     <>
-    <NavbarComponent />
     <div className={styles.booking}>
       <div className={styles.page}>
-        <h1 className={styles.title}>Booking restoran</h1>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <input value={nama} onChange={(e) => setName(e.target.value)} type="text" placeholder="Nama" required />
-          <input value={noTelp} onChange={(e) => setNoTelp(e.target.value)} type="text" placeholder="No Telepon" required/>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" required />
-          <input value={tanggal} onChange={(e) => setTanggal(e.target.value)} type="date" required />
-          <input type="number" min={1} value={jumlahOrang} onChange={(e) => setJumlahOrang(Number(e.target.value))} placeholder="Jumlah Orang"/>
-          <input type="text" value={acara} onChange={(e) => setAcara(e.target.value)} placeholder="Acara (opsional)"/>
+        <h1 className={styles.title}>Booking Confirmation</h1>
+        <ul>
+            <li>Nama: {nama}</li>
+            <li>No Telepon: {noTelp}</li>
+            <li>Email: {email}</li>
+            <li>Tanggal: {tanggal}</li>
+            <li>Jumlah Orang: {jumlahOrang}</li>
+            <li>Acara: {acara}</li>
+        </ul>
           <div className={styles.buttons}>
           <button className={styles.submit} type="submit" disabled={loading}>
             {loading ? "Menyimpan..." : "Booking"}
           </button>
 
-          <button
-            type="button"
-            className={styles.cancel}
-            onClick={handleCancel}
-            disabled={loading}
-          >
-            Cancel
-          </button>
+          <button type="button" className={styles.cancel} onClick={handleCancel} disabled={loading}>Cancel</button>
           </div>
-        </form>
         
 
         {pesan && <p>{pesan}</p>}
@@ -96,4 +76,15 @@ export default function BookingConfirmation() {
     </div>
     </>
   );
+}
+
+export default function confirmAgain() {
+    return (
+    <>
+    <NavbarComponent />
+    <Suspense fallback={<div>Loading...</div>}>
+    <BookingConfirmation />
+    </Suspense>
+    </>
+    );
 }
