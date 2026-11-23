@@ -14,9 +14,10 @@ export default function Booking() {
     noTelp: "",
     email: "",
     tanggal: "",
-    jumlahOrang: "2",
+    jumlahOrang: "1",
     jam: "",
     acara: "",
+    areaMeja: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,12 +48,10 @@ export default function Booking() {
                   <input id="noTelp" name="noTelp" type="tel" value={form.noTelp} onChange={handleChange} placeholder="No Telepon" required />
                 </div>
               </div>
-
               <div className={styles.formInput}>
-                <label htmlFor="email">Email Konfirmasi</label>
-                <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="nama@email.com" required />
+              <label htmlFor="email">Email Konfirmasi</label>
+              <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="nama@email.com" required />
               </div>
-
               <div className={styles.row3}>
                 <div className={styles.formInput}>
                   <label htmlFor="tanggal">Tanggal</label>
@@ -60,7 +59,7 @@ export default function Booking() {
                 </div>
                 <div className={styles.formInput}>
                   <label htmlFor="jumlahOrang">Tamu</label>
-                  <input id="jumlahOrang" name="jumlahOrang" type="number" min={1} max={20} value={form.jumlahOrang} onChange={handleChange} required />
+                  <input id="jumlahOrang" name="jumlahOrang" type="number" min={1} max={50} value={form.jumlahOrang} onChange={handleChange} required />
                 </div>
                 <div className={styles.formInput}>
                   <label htmlFor="jam">Jam Kedatangan</label>
@@ -71,14 +70,16 @@ export default function Booking() {
                 <label htmlFor="acara">Acara</label>
                 <input id="acara" name="acara" value={form.acara} onChange={handleChange} placeholder="Acara (opsional)" />
               </div>
-
+              <div className={styles.formInput}>
+              <label htmlFor="areaMeja">Area & Meja</label>
+              <input id="areaMeja" name="areaMeja" value={form.areaMeja} onChange={handleChange} placeholder="Tentukan area meja anda (misalkan: Meja T-12)" required/>
+            </div>
               <div className={styles.formInput}>
                 <button type="submit" className={styles.submit}>Konfirmasi Booking</button>
                 <button type="button" className={styles.cancel} onClick={() => router.back()}>Batal</button>
               </div>
             </form>
           </div>
-
         </div>
       </main>
     </>
