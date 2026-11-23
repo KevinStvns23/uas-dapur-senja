@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import styles from "./reservasi.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@/app/globals.css";
 
 export default function Reservasi() {
   const router = useRouter();
@@ -40,32 +44,29 @@ export default function Reservasi() {
 
   return (
     <>
-      <main>
-        <h1>Reservasi</h1>
+    <div className={styles.page}>
+      <Image src="/img/resto.jpg" alt="" fill style={{ objectFit: "cover", zIndex: -1 }} priority />
+      <div className={styles.card}>
+        <div className={styles.titleLogo}>
+          <Image src="/img/tudung-saji.png" alt="Logo Tudung Saji" width={90} height={90} className={styles.logo} />
+        <h1 className={styles.title}>Reservasi</h1>
+         </div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <input className={`${styles.inputReservasi} ${styles.inputWithIcon}`} type="text" value={tujuan} onChange={(e) => setTujuan(e.target.value)} placeholder="Tujuan reservasi" required />
+          <input className={`${styles.inputReservasi} ${styles.inputWithCalendar}`} type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} required />
+          <input className={`${styles.inputReservasi} ${styles.inputWithTime}`} type="time" value={jam} onChange={(e) => setJam(e.target.value)} required />
+          <input className={`${styles.inputReservasi} ${styles.inputWithPeople}`} type="number" min={1} value={jumlahOrang} onChange={(e) => setJumlahOrang(Number(e.target.value))} />
+         <div className={styles.buttonGroup}>
+         <button className={`${styles.submit} ${styles.inputWithCalCheck}`} type="submit" disabled={loading}>
+              {loading ? "Menyimpan..." : "Reservasi"}
+          </button>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="tujuan">Tujuan Reservasi</label>
-            <input id="tujuan" type="text" value={tujuan} onChange={(e) => setTujuan(e.target.value)} required />
+            <button type="button" className={`${styles.cancel} ${styles.circleX}`} onClick={() => router.push("/home")} disabled={loading}> Cancel</button>
           </div>
-          <div>
-            <label htmlFor="tanggal">Tanggal</label>
-            <input id="tanggal" type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} required />
-          </div>
-          <div>
-            <label htmlFor="jam">Jam</label>
-            <input id="jam" type="time" value={jam} onChange={(e) => setJam(e.target.value)} required />
-          </div>
-          <div>
-            <label htmlFor="jumlahOrang">Jumlah Orang</label>
-            <input id="jumlahOrang" type="number" min={1} value={jumlahOrang} onChange={(e) => setJumlahOrang(Number(e.target.value))} />
-          </div>
-          <button type="submit" disabled={loading}>{loading ? "Menyimpan..." : "Reservasi"}</button>
-          <button type="button" onClick={() => router.push("/home")} disabled={loading}>Cancel</button>
         </form>
-
         {pesan && <p>{pesan}</p>}
-      </main>
+      </div>
+    </div>
     </>
   );
 }
