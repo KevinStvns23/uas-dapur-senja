@@ -4,6 +4,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./booking.module.css";
+import MainNavbar from "@/app/components/MainNavbar";
 
 export default function Booking() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function Booking() {
 
   return (
     <>
+    <MainNavbar/>
       <main className={styles.booking}>
         <div className={styles.card}>
           <div className={styles.formSide}>

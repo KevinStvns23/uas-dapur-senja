@@ -64,7 +64,6 @@ export default function BookingConfirmation() {
 
   return (
     <>
-
       <main className={styles.booking}>
         <div className={styles.page}>
           <div className={styles.logoCentang}>
@@ -79,7 +78,6 @@ export default function BookingConfirmation() {
           )}
 
           <div className={styles.detail}>
-
             <div className={styles.dataBooking}>
               <span className={styles.icon}>♙</span>
               <div>
