@@ -117,6 +117,7 @@
 
 .buttons {
   display: flex;
+  flex-direction: row;
   gap: 14px;
   margin-top: 10px;
 }
@@ -168,6 +169,13 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+.tombol {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 10px;
+}
+
 @media (max-width: 760px) {
   .card {
     grid-template-columns: 1fr;
@@ -191,7 +199,8 @@
     grid-template-columns: 1fr;
   }
 
-  .buttons {
-    flex-direction: column;
+  .tombol {
+    flex-direction: row;
+    width: 80%;
   }
 } 

@@ -27,7 +27,7 @@ export default function MainNavbar() {
                         <Nav.Link as={Link} href="/promo">
                             Promo & Info
                         </Nav.Link>
-                        <Nav.Link as={Link} href="/reservation">
+                        <Nav.Link as={Link} href="/SistemBooking/reservasi">
                             Reservation
                         </Nav.Link>
                         <Nav.Link as={Link} href="/account">
