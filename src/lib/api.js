@@ -1,7 +1,4 @@
-// Semua pemanggilan backend lewat sini.
-// NEXT_PUBLIC_USE_MOCK=true  -> pakai data palsu di localStorage (buat demo front end dulu)
-// NEXT_PUBLIC_USE_MOCK=false -> panggil API route Next.js yang terhubung ke database
-const MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
+const MOCK = process.env.NEXT_PUBLIC_USE_MOCK !== "false";
 const BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 export const session = {
@@ -32,7 +29,6 @@ async function request(path, { method = "GET", body } = {}) {
   return data;
 }
 
-/* ---------- Mock (sementara, sebelum database siap) ---------- */
 const wait = (ms = 600) => new Promise((r) => setTimeout(r, ms));
 const users = () => JSON.parse(localStorage.getItem("ds_mock_users") || "[]");
 const saveUsers = (u) => localStorage.setItem("ds_mock_users", JSON.stringify(u));
@@ -70,7 +66,6 @@ const mock = {
   },
 };
 
-/* ---------- Real API ---------- */
 const real = {
   register: (p) => request("/auth/register", { method: "POST", body: p }),
   login: (p) => request("/auth/login", { method: "POST", body: p }),
