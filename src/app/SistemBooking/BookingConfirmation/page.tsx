@@ -141,7 +141,7 @@ export default function BookingConfirmation() {
 
           <div className={styles.buttons}>
             <button className={styles.submit} onClick={handleSubmit} disabled={loading || saved || !nama || !tanggal || !jam}>
-              {loading ? "Menyimpan...": saved? "Booking berhasil!" : "Simpan Booking"}
+              {loading ? "Menyimpan...": saved? "Booking berhasil!" : "Confirm"}
             </button>
 
             <button className={styles.cancel} onClick={() => router.push("/SistemBooking/booking?${searchParams.toString()}")} disabled={loading}>Kembali</button>
