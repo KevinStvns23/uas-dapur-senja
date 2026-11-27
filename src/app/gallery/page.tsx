@@ -1,6 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "motion/react";
 import "./style.css";
+
+const momenItems = [
+  { imgSrc: "/img-events&momen/suasana-restoran.webp", alt: "Suasana Resto", title: "Area Makan Nyaman" },
+  { imgSrc: "/img-events&momen/suasana-outdoor.jpg", alt: "Suasana Outdoor", title: "Area Teras Terbuka" },
+  { imgSrc: "/img-events&momen/momen-hangat-keluarga.jpeg", alt: "Momen Keluarga", title: "Momen Hangat Keluarga" },
+  { imgSrc: "/img-events&momen/dapur-restoran.jpg", alt: "Dapur", title: "Dapur Profesional" },
+  { imgSrc: "/img-events&momen/tim-restoran.jpg", alt: "Tim Koki", title: "Chef Berpengalaman" },
+  { imgSrc: "/img-events&momen/live-akustik.jpg", alt: "Akustik", title: "Panggung Akustik" },
+  { imgSrc: "/img-events&momen/nonton-bareng.jpg", alt: "Nobar", title: "Area Nonton Bareng" },
+];
+
+const rasaItems = [
+  { imgSrc: "/images/ayambakar.jpg", alt: "Ayam Bakar", label: "Ayam Bakar", title: "Ayam Bakar", desc: "Diungkep perlahan dengan racikan rempah warisan keluarga sebelum dibakar di atas arang." },
+  { imgSrc: "/images/ayamgeprek.jpg", alt: "Ayam Geprek", label: "Ayam Geprek", title: "Ayam Geprek", desc: "Perpaduan tekstur ayam krispi keemasan dengan ulekan sambal bawang pedas yang menggigit." },
+  { imgSrc: "/images/nasigoreng.jpg", alt: "Nasi Goreng", label: "Nasi Goreng Spesial", title: "Nasi Goreng Spesial", desc: "Dimasak dengan api besar untuk mengunci aroma wok hei, dipadukan dengan bumbu rempah pekat." },
+  { imgSrc: "/images/miegoreng.jpg", alt: "Mie Goreng", label: "Mie Goreng", title: "Mie Goreng", desc: "Racikan mie kenyal yang ditumis bersuhu tinggi, menyajikan cita rasa gurih manis dengan limpahan topping." },
+  { imgSrc: "/images/rendang.jpg", alt: "Rendang Sapi", label: "Rendang Sapi", title: "Rendang Sapi", desc: "Potongan daging sapi dimasak perlahan berjam-jam dalam lumuran santan kental, tekstur empuk bumbu meresap." },
+  { imgSrc: "/images/sate.jpg", alt: "Sate Ayam", label: "Sate Ayam", title: "Sate Ayam", desc: "Daging ayam lembut dipanggang sempurna, dilumuri bumbu kacang kental gurih manis." },
+  { imgSrc: "/images/spageti.jpg", alt: "Spaghetti", label: "Spaghetti", title: "Spaghetti Bolognese", desc: "Pasta al dente yang disajikan dengan saus tomat daging cincang kaya rempah khas Italia." },
+  { imgSrc: "/images/frenchfries.jpg", alt: "French Fries", label: "French Fries", title: "French Fries", desc: "Potongan kentang pilihan yang digoreng garing di luar namun tetap lembut di dalam." },
+  { imgSrc: "/images/lumpia.jpg", alt: "Lumpia Goreng", label: "Lumpia Goreng", title: "Lumpia Goreng", desc: "Kulit krispi menyembunyikan isian rebung dan sayur gurih yang kaya rasa, digoreng dadakan." },
+  { imgSrc: "/images/mendoan.jpg", alt: "Tempe Mendoan", label: "Tempe Mendoan", title: "Tempe Mendoan", desc: "Dibalut adonan tepung berbumbu yang digoreng setengah matang, tekstur basah dan gurih khas." },
+  { imgSrc: "/images/bread.jpg", alt: "Roti Bakar", label: "Roti Bakar", title: "Roti Bakar", desc: "Roti tebal dipanggang dengan mentega hingga garing, menyembunyikan kelembutan dan manis di dalam." },
+  { imgSrc: "/images/pisangbakar.jpg", alt: "Pisang Bakar", label: "Pisang Bakar", title: "Pisang Bakar", desc: "Pisang manis legit yang dibakar perlahan hingga karamelisasi alaminya keluar." },
+  { imgSrc: "/images/cake.jpg", alt: "Choco Cake", label: "Choco Cake", title: "Choco Cake", desc: "Kejutan manis yang menghangatkan suasana. Bolu cokelat lembut dengan rasa pekat yang lumer." },
+  { imgSrc: "/images/tiramisu.jpg", alt: "Tiramisu", label: "Tiramisu", title: "Tiramisu", desc: "Dessert klasik berlapis ladyfingers celup kopi dengan krim mascarpone yang ringan dan taburan kakao." },
+  { imgSrc: "/images/escampur.jpg", alt: "Es Campur", label: "Es Campur", title: "Es Campur", desc: "Mangkuk nostalgia dengan serutan es, sirup manis legit, dan ragam isian kenyal menyegarkan." },
+  { imgSrc: "/images/alpukat.jpg", alt: "Jus Alpukat", label: "Jus Alpukat", title: "Jus Alpukat", desc: "Alpukat mentega yang diblend sempurna dengan sentuhan kental manis cokelat di pinggiran gelas." },
+  { imgSrc: "/images/stroberi.jpg", alt: "Smoothies", label: "Berry Smoothies", title: "Berry Smoothies", desc: "Campuran buah beri segar dan yogurt yang dihaluskan, sangat cocok untuk mengimbangi hidangan gurih." },
+  { imgSrc: "/images/matcha.jpg", alt: "Matcha", label: "Matcha Latte", title: "Matcha Latte", desc: "Perpaduan teh hijau premium dengan susu krimi, menghasilkan rasa earthy yang khas dan menenangkan." },
+  { imgSrc: "/images/lemontea.jpg", alt: "Lemon Tea", label: "Lemon Tea", title: "Lemon Tea", desc: "Kesegaran teh pilihan berpadu dengan asam manis perasan lemon asli." },
+  { imgSrc: "/images/americano.jpg", alt: "Americano", label: "Americano", title: "Americano", desc: "Ekstraksi kopi murni yang tegas dan berkarakter, memberikan energi murni tanpa rasa manis berlebih." },
+];
 
 export default function GalleryPage() {
   const [activeTab, setActiveTab] = useState("tab-momen");
@@ -11,183 +46,173 @@ export default function GalleryPage() {
   };
 
   const closeModal = () => {
-    setModalData(prev => ({ ...prev, isOpen: false }));
+    setModalData((prev) => ({ ...prev, isOpen: false }));
   };
+
+  useEffect(() => {
+    if (!modalData.isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modalData.isOpen]);
 
   return (
     <>
       <nav className="navbar">
-        <div className="logo">Dapur Senja</div>
+        <Link href="/" className="logo">Dapur Senja</Link>
         <ul className="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/promotions">Promo & Info</a></li>
-          <li><a href="/reservation">Reservation</a></li>
-          <li><a href="/login">Account</a></li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/menu">Menu</Link></li>
+          <li><Link href="/promotions" className="active">Promo & Info</Link></li>
+          <li><Link href="/reservation">Reservation</Link></li>
+          <li><Link href="/login">Account</Link></li>
         </ul>
       </nav>
 
-      <header className="menu-header">
+      <motion.header
+        className="menu-header"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+      >
         <h1>Galeri & Momen</h1>
         <p>Jelajahi fasilitas dan momen hangat di restoran kami</p>
-      </header>
+      </motion.header>
 
       <div className="filter-container">
-        <a href="/promotions" className="filter-btn">Promotions</a>
-        <a href="/events" className="filter-btn">Events</a>
-        <a href="/gallery" className="filter-btn active">Gallery</a>
-        <a href="/reviews" className="filter-btn">Reviews</a>
+        <Link href="/promotions" className="filter-btn">Promotions</Link>
+        <Link href="/events" className="filter-btn">Events</Link>
+        <Link href="/gallery" className="filter-btn active">Gallery</Link>
+        <Link href="/reviews" className="filter-btn">Reviews</Link>
       </div>
 
       <main>
         <div className="tab-container">
-          <button 
-            className={`tab-btn ${activeTab === 'tab-momen' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('tab-momen')}
+          <button
+            className={`tab-btn ${activeTab === "tab-momen" ? "active" : ""}`}
+            onClick={() => setActiveTab("tab-momen")}
           >
             Suasana & Momen
           </button>
-          <button 
-            className={`tab-btn ${activeTab === 'tab-rasa' ? 'active' : ''}`} 
-            onClick={() => setActiveTab('tab-rasa')}
+          <button
+            className={`tab-btn ${activeTab === "tab-rasa" ? "active" : ""}`}
+            onClick={() => setActiveTab("tab-rasa")}
           >
             Kisah di Balik Rasa
           </button>
         </div>
 
-        <section id="tab-momen" className="tab-content" style={{ display: activeTab === 'tab-momen' ? 'block' : 'none' }}>
-          <p style={{ textAlign: 'center', marginBottom: '20px' }}>Intip fasilitas dan momen hangat di Dapur Senja.</p>
-          <div className="gallery-grid">
-            <div className="gallery-item">
-              <img src="/img-events&momen/suasana-restoran.webp" alt="Suasana Resto" />
-              <p>Area Makan Nyaman</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/suasana-outdoor.jpg" alt="Suasana Outdoor" />
-              <p>Area Teras Terbuka</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/momen-hangat-keluarga.jpeg" alt="Momen Keluarga" />
-              <p>Momen Hangat Keluarga</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/dapur-restoran.jpg" alt="Dapur" />
-              <p>Dapur Profesional</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/tim-restoran.jpg" alt="Tim Koki" />
-              <p>Chef Berpengalaman</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/live-akustik.jpg" alt="Akustik" />
-              <p>Panggung Akustik</p>
-            </div>
-            <div className="gallery-item">
-              <img src="/img-events&momen/nonton-bareng.jpg" alt="Nobar" />
-              <p>Area Nonton Bareng</p>
-            </div>
-          </div>
-        </section>
+        <AnimatePresence mode="wait">
+          {activeTab === "tab-momen" ? (
+            <motion.section
+              key="tab-momen"
+              id="tab-momen"
+              className="tab-content"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <p className="tab-subtitle">Intip fasilitas dan momen hangat di Dapur Senja.</p>
+              <div className="gallery-grid">
+                {momenItems.map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    className="gallery-item"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: index * 0.04, ease: "easeOut" }}
+                  >
+                    <div className="gallery-img-wrapper">
+                      <img src={item.imgSrc} alt={item.alt} />
+                    </div>
+                    <p>{item.title}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          ) : (
+            <motion.section
+              key="tab-rasa"
+              id="tab-rasa"
+              className="tab-content"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              <p className="tab-subtitle">Klik hidangan untuk mengetahui cerita di balik rasanya.</p>
+              <div className="gallery-grid">
+                {rasaItems.map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    className="gallery-item"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(index * 0.025, 0.25), ease: "easeOut" }}
+                    onClick={() => openModal(item.imgSrc, item.title, item.desc)}
+                  >
+                    <div className="gallery-img-wrapper">
+                      <img src={item.imgSrc} alt={item.alt} />
+                    </div>
+                    <p>{item.label}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
 
-        <section id="tab-rasa" className="tab-content" style={{ display: activeTab === 'tab-rasa' ? 'block' : 'none' }}>
-          <p style={{ textAlign: 'center', marginBottom: '20px' }}>Klik hidangan untuk mengetahui cerita di balik rasanya.</p>
-          <div className="gallery-grid">
-            <div className="gallery-item" onClick={() => openModal('/menu/images/ayambakar.jpg', 'Ayam Bakar', 'Diungkep perlahan dengan racikan rempah warisan keluarga sebelum dibakar di atas arang.')}>
-              <img src="/menu/images/ayambakar.jpg" alt="Ayam Bakar" />
-              <p>Ayam Bakar</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/ayamgeprek.jpg', 'Ayam Geprek', 'Perpaduan tekstur ayam krispi keemasan dengan ulekan sambal bawang pedas yang menggigit.')}>
-              <img src="/menu/images/ayamgeprek.jpg" alt="Ayam Geprek" />
-              <p>Ayam Geprek</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/nasigoreng.jpg', 'Nasi Goreng Spesial', 'Dimasak dengan api besar untuk mengunci aroma wok hei, dipadukan dengan bumbu rempah pekat.')}>
-              <img src="/menu/images/nasigoreng.jpg" alt="Nasi Goreng" />
-              <p>Nasi Goreng Spesial</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/miegoreng.jpg', 'Mie Goreng', 'Racikan mie kenyal yang ditumis bersuhu tinggi, menyajikan cita rasa gurih manis dengan limpahan topping.')}>
-              <img src="/menu/images/miegoreng.jpg" alt="Mie Goreng" />
-              <p>Mie Goreng</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/rendang.jpg', 'Rendang Sapi', 'Potongan daging sapi dimasak perlahan berjam-jam dalam lumuran santan kental, tekstur empuk bumbu meresap.')}>
-              <img src="/menu/images/rendang.jpg" alt="Rendang Sapi" />
-              <p>Rendang Sapi</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/sate.jpg', 'Sate Ayam', 'Daging ayam lembut dipanggang sempurna, dilumuri bumbu kacang kental gurih manis.')}>
-              <img src="/menu/images/sate.jpg" alt="Sate Ayam" />
-              <p>Sate Ayam</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/spageti.jpg', 'Spaghetti Bolognese', 'Pasta al dente yang disajikan dengan saus tomat daging cincang kaya rempah khas Italia.')}>
-              <img src="/menu/images/spageti.jpg" alt="Spaghetti" />
-              <p>Spaghetti</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/frenchfries.jpg', 'French Fries', 'Potongan kentang pilihan yang digoreng garing di luar namun tetap lembut di dalam.')}>
-              <img src="/menu/images/frenchfries.jpg" alt="French Fries" />
-              <p>French Fries</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/lumpia.jpg', 'Lumpia Goreng', 'Kulit krispi menyembunyikan isian rebung dan sayur gurih yang kaya rasa, digoreng dadakan.')}>
-              <img src="/menu/images/lumpia.jpg" alt="Lumpia Goreng" />
-              <p>Lumpia Goreng</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/mendoan.jpg', 'Tempe Mendoan', 'Dibalut adonan tepung berbumbu yang digoreng setengah matang, tekstur basah dan gurih khas.')}>
-              <img src="/menu/images/mendoan.jpg" alt="Tempe Mendoan" />
-              <p>Tempe Mendoan</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/bread.jpg', 'Roti Bakar', 'Roti tebal dipanggang dengan mentega hingga garing, menyembunyikan kelembutan dan manis di dalam.')}>
-              <img src="/menu/images/bread.jpg" alt="Roti Bakar" />
-              <p>Roti Bakar</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/pisangbakar.jpg', 'Pisang Bakar', 'Pisang manis legit yang dibakar perlahan hingga karamelisasi alaminya keluar.')}>
-              <img src="/menu/images/pisangbakar.jpg" alt="Pisang Bakar" />
-              <p>Pisang Bakar</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/cake.jpg', 'Choco Cake', 'Kejutan manis yang menghangatkan suasana. Bolu cokelat lembut dengan rasa pekat yang lumer.')}>
-              <img src="/menu/images/cake.jpg" alt="Choco Cake" />
-              <p>Choco Cake</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/tiramisu.jpg', 'Tiramisu', 'Dessert klasik berlapis ladyfingers celup kopi dengan krim mascarpone yang ringan dan taburan kakao.')}>
-              <img src="/menu/images/tiramisu.jpg" alt="Tiramisu" />
-              <p>Tiramisu</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/escampur.jpg', 'Es Campur', 'Mangkuk nostalgia dengan serutan es, sirup manis legit, dan ragam isian kenyal menyegarkan.')}>
-              <img src="/menu/images/escampur.jpg" alt="Es Campur" />
-              <p>Es Campur</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/jusalpukat.jpg', 'Jus Alpukat', 'Alpukat mentega yang diblend sempurna dengan sentuhan kental manis cokelat di pinggiran gelas.')}>
-              <img src="/menu/images/jusalpukat.jpg" alt="Jus Alpukat" />
-              <p>Jus Alpukat</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/smoothies.jpg', 'Berry Smoothies', 'Campuran buah beri segar dan yogurt yang dihaluskan, sangat cocok untuk mengimbangi hidangan gurih.')}>
-              <img src="/menu/images/smoothies.jpg" alt="Smoothies" />
-              <p>Berry Smoothies</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/matcha.jpg', 'Matcha Latte', 'Perpaduan teh hijau premium dengan susu krimi, menghasilkan rasa earthy yang khas dan menenangkan.')}>
-              <img src="/menu/images/matcha.jpg" alt="Matcha" />
-              <p>Matcha Latte</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/lemontea.jpg', 'Lemon Tea', 'Kesegaran teh pilihan berpadu dengan asam manis perasan lemon asli.')}>
-              <img src="/menu/images/lemontea.jpg" alt="Lemon Tea" />
-              <p>Lemon Tea</p>
-            </div>
-            <div className="gallery-item" onClick={() => openModal('/menu/images/americano.jpg', 'Americano', 'Ekstraksi kopi murni yang tegas dan berkarakter, memberikan energi murni tanpa rasa manis berlebih.')}>
-              <img src="/menu/images/americano.jpg" alt="Americano" />
-              <p>Americano</p>
-            </div>
-          </div>
-        </section>
-
-        <div id="food-modal" className={`modal ${modalData.isOpen ? 'show-animasi' : ''}`} style={{ display: modalData.isOpen ? 'flex' : 'none' }}>
-          <div className="modal-content">
-            <button className="close-btn" onClick={closeModal}>X</button>
-            {modalData.imgSrc && <img id="modal-img" src={modalData.imgSrc} alt="Menu Foto" />}
-            <div className="modal-text">
-              <h2 id="modal-title">{modalData.title}</h2>
-              <p id="modal-desc">{modalData.desc}</p>
-            </div>
-          </div>
-        </div>
+        <AnimatePresence>
+          {modalData.isOpen && (
+            <motion.div
+              id="food-modal"
+              className="modal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}
+              onClick={closeModal}
+            >
+              <motion.div
+                className="modal-content"
+                data-lenis-prevent
+                initial={{ opacity: 0, scale: 0.92, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: 10 }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button className="close-btn" onClick={closeModal}>X</button>
+                {modalData.imgSrc && (
+                  <motion.img
+                    id="modal-img"
+                    src={modalData.imgSrc}
+                    alt={modalData.title}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  />
+                )}
+                <motion.div
+                  className="modal-text"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35, delay: 0.06, ease: "easeOut" }}
+                >
+                  <h2 id="modal-title">{modalData.title}</h2>
+                  <p id="modal-desc">{modalData.desc}</p>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
+
       <footer>
-        <p style={{ textAlign: 'center' }}>&copy; 2026 Dapur Senja. All rights reserved.</p>
+        <p>&copy; 2026 Dapur Senja. All rights reserved.</p>
       </footer>
     </>
   );

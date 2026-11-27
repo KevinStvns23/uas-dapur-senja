@@ -3,18 +3,18 @@
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; }
 main { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
 h1, h2, h3 { color: #ff8c00; }
-button { background-color: #ff8c00; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background-color 0.3s; }
-button:hover { background-color: #e07b00; }
+button { background-color: #ff8c00; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.25s ease; }
+button:hover { background-color: #e07b00; filter: brightness(0.96); }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 1rem 5%;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -27,8 +27,14 @@ button:hover { background-color: #e07b00; }
     font-size: 2.2rem;
     font-weight: normal;
     color: #333;
+    text-decoration: none;
     cursor: pointer;
     margin: 0;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: #ff8c00;
 }
 
 .nav-links {
@@ -49,7 +55,7 @@ button:hover { background-color: #e07b00; }
     color: #333;
     font-weight: bold;
     font-size: 16px;
-    transition: color 0.3s;
+    transition: color 0.25s ease;
 }
 
 .nav-links a.active, .nav-links a:hover {
@@ -97,7 +103,7 @@ button:hover { background-color: #e07b00; }
     color: #333;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     font-weight: bold;
     font-size: 1rem;
     display: inline-block;
@@ -106,38 +112,139 @@ button:hover { background-color: #e07b00; }
 .filter-btn.active, .filter-btn:hover {
     background-color: #ff9800;
     color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255, 152, 0, 0.3);
 }
 
-.promo-card { background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-.promo-card.flash-sale { background-color: #fff4e6; border: 2px solid #ff8c00; }
+.promo-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-.faq-container { display: flex; flex-direction: column; gap: 10px; max-width: 800px; margin: 0 auto; }
-.faq-btn { background-color: #fff; color: #333; text-align: left; padding: 15px; width: 100%; border: 1px solid #eee; outline: none; transition: 0.3s; border-radius: 5px; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-.faq-btn:hover { background-color: #f1f1f1; }
-.faq-btn.active { background-color: #ff8c00; color: #fff; border-color: #ff8c00; }
-.faq-content { padding: 0 15px; background-color: #fffcf9; overflow: hidden; display: none; border-radius: 0 0 5px 5px; border-left: 1px solid #ff8c00; border-right: 1px solid #ff8c00; border-bottom: 1px solid #ff8c00; margin-top: -5px; }
-.faq-content p { color: #555; margin: 15px 0; }
+.promo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
 
-.custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s; }
-.custom-alert-box { background: #fff; padding: 25px 30px; border-radius: 8px; max-width: 400px; width: 80%; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); border-top: 4px solid #ff8c00; animation: fadeDown 0.3s ease-out; }
-.custom-alert-box p { color: #333; font-size: 16px; line-height: 1.5; margin-bottom: 20px; margin-top: 0; }
-.custom-alert-btn { background: #ff8c00; color: #fff; padding: 8px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 15px; }
+.promo-card.flash-sale {
+    background-color: #fff4e6;
+    border: 2px solid #ff8c00;
+    box-shadow: 0 6px 18px rgba(255, 140, 0, 0.14);
+}
 
-@keyframes fadeDown { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-
-@media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 10px; }
-    .nav-links { flex-wrap: wrap; justify-content: center; }
+.countdown-text {
+    font-weight: bold;
+    color: #e65100;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 .promo-card h2 {
     font-weight: bold !important;
+    margin-bottom: 10px;
 }
 
 .promo-card strong {
     font-weight: bold !important;
     color: #333 !important;
+}
+
+.faq-title {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 24px;
+    font-weight: bold;
+}
+
+.faq-container { display: flex; flex-direction: column; gap: 12px; max-width: 800px; margin: 0 auto; }
+.faq-item { border-radius: 8px; overflow: hidden; }
+.faq-btn {
+    background-color: #fff;
+    color: #333;
+    text-align: left;
+    padding: 16px 18px;
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    transition: all 0.25s ease;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.faq-btn:hover { background-color: #fff9f2; border-color: #ff8c00; }
+.faq-btn.active { background-color: #ff8c00; color: #fff; border-color: #ff8c00; border-radius: 8px 8px 0 0; }
+.faq-icon {
+    font-size: 20px;
+    line-height: 1;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+.faq-icon.open {
+    transform: rotate(45deg);
+}
+.faq-content {
+    padding: 0 18px;
+    background-color: #fffcf9;
+    overflow: hidden;
+    border-radius: 0 0 8px 8px;
+    border-left: 1px solid #ff8c00;
+    border-right: 1px solid #ff8c00;
+    border-bottom: 1px solid #ff8c00;
+}
+.faq-content p { color: #555; margin: 16px 0; line-height: 1.6; }
+
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.custom-alert-box {
+    background: #fff;
+    padding: 28px 32px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+    border-top: 4px solid #ff8c00;
+}
+.custom-alert-box p { color: #333; font-size: 16px; line-height: 1.5; margin-bottom: 12px; margin-top: 0; }
+.custom-alert-btn { background: #ff8c00; color: #fff; padding: 10px 28px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 8px; }
+
+footer {
+    padding: 25px 5%;
+    margin-top: 50px;
+    border-top: 1px solid #eee;
+    color: #777;
+    font-size: 14px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 10px; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .menu-header h1 { font-size: 2.5rem; }
 }

@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "motion/react";
 import "./style.css";
 import { getReviews, addReview } from "./actions";
 
@@ -11,34 +13,81 @@ type ReviewData = {
   text: string;
 };
 
+const menuUtama = [
+  "Ayam Bakar",
+  "Ayam Geprek",
+  "Nasi Goreng Spesial",
+  "Mie Goreng",
+  "Rendang Sapi",
+  "Sate Ayam",
+  "Spaghetti Bolognese",
+];
+
+const camilanMinuman = [
+  "French Fries",
+  "Lumpia Goreng",
+  "Tempe Mendoan",
+  "Roti Bakar",
+  "Pisang Bakar",
+  "Choco Cake",
+  "Tiramisu",
+  "Es Campur",
+  "Jus Alpukat",
+  "Berry Smoothies",
+  "Matcha Latte",
+  "Lemon Tea",
+  "Americano",
+];
+
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<ReviewData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [reviewerName, setReviewerName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     async function fetchReviews() {
-      const dbReviews = await getReviews();
-      setReviews(dbReviews);
+      try {
+        const dbReviews = await getReviews();
+        setReviews(dbReviews);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchReviews();
   }, []);
 
+  useEffect(() => {
+    if (!alertMessage) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setAlertMessage("");
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [alertMessage]);
+
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
   const submitReviewHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    const cleanName = reviewerName.trim();
+    const cleanText = reviewText.trim();
+
+    if (!cleanName || !cleanText) {
+      setAlertMessage("Nama dan isi ulasan tidak boleh kosong.");
+      return;
+    }
+
     if (rating === 0) {
       setAlertMessage("Mohon berikan rating bintang (1-5) terlebih dahulu.");
       return;
@@ -47,19 +96,18 @@ export default function ReviewsPage() {
     setIsSubmitting(true);
 
     const finalTags = selectedTags.length === 0 ? "Menu Umum" : selectedTags.join(", ");
-    
+
     const formData = new FormData();
-    formData.append("name", reviewerName);
+    formData.append("name", cleanName);
     formData.append("rating", rating.toString());
-    formData.append("text", reviewText);
+    formData.append("text", cleanText);
     formData.append("tags", finalTags);
 
     const result = await addReview(formData);
 
     if (result.success && result.review) {
-      setReviews([result.review, ...reviews]);
+      setReviews((prev) => [result.review, ...prev]);
       setAlertMessage("Terima kasih atas ulasannya! Ulasan Anda telah berhasil disimpan ke database.");
-      
       setReviewerName("");
       setReviewText("");
       setSelectedTags([]);
@@ -68,47 +116,57 @@ export default function ReviewsPage() {
     } else {
       setAlertMessage("Maaf, terjadi kesalahan saat menyimpan ulasan. Pastikan server database berjalan.");
     }
-    
+
     setIsSubmitting(false);
   };
-
-  const menuUtama = ["Ayam Bakar", "Ayam Geprek", "Nasi Goreng Spesial", "Mie Goreng", "Rendang Sapi", "Sate Ayam", "Spaghetti Bolognese"];
-  const camilanMinuman = ["French Fries", "Lumpia Goreng", "Tempe Mendoan", "Roti Bakar", "Pisang Bakar", "Choco Cake", "Tiramisu", "Es Campur", "Jus Alpukat", "Berry Smoothies", "Matcha Latte", "Lemon Tea", "Americano"];
 
   return (
     <>
       <nav className="navbar">
-        <div className="logo">Dapur Senja</div>
+        <Link href="/" className="logo">Dapur Senja</Link>
         <ul className="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/promotions">Promo & Info</a></li>
-          <li><a href="/reservation">Reservation</a></li>
-          <li><a href="/login">Account</a></li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/menu">Menu</Link></li>
+          <li><Link href="/promotions" className="active">Promo & Info</Link></li>
+          <li><Link href="/reservation">Reservation</Link></li>
+          <li><Link href="/login">Account</Link></li>
         </ul>
       </nav>
 
-      <header className="menu-header">
+      <motion.header
+        className="menu-header"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+      >
         <h1>Apa Kata Mereka?</h1>
         <p>Ulasan asli dari para pelanggan setia Dapur Senja</p>
-      </header>
+      </motion.header>
 
       <div className="filter-container">
-        <a href="/promotions" className="filter-btn">Promotions</a>
-        <a href="/events" className="filter-btn">Events</a>
-        <a href="/gallery" className="filter-btn">Gallery</a>
-        <a href="/reviews" className="filter-btn active">Reviews</a>
+        <Link href="/promotions" className="filter-btn">Promotions</Link>
+        <Link href="/events" className="filter-btn">Events</Link>
+        <Link href="/gallery" className="filter-btn">Gallery</Link>
+        <Link href="/reviews" className="filter-btn active">Reviews</Link>
       </div>
 
       <main>
         <div className="review-grid">
-          {reviews.length === 0 ? (
-            <p style={{ textAlign: 'center', gridColumn: '1 / -1', color: '#777' }}>Belum ada ulasan. Jadilah yang pertama!</p>
+          {isLoading ? (
+            <p className="review-status-text">Memuat ulasan...</p>
+          ) : reviews.length === 0 ? (
+            <p className="review-status-text">Belum ada ulasan. Jadilah yang pertama!</p>
           ) : (
             reviews.map((rev, index) => (
-              <div className="review-card" key={index}>
+              <motion.div
+                className="review-card"
+                key={rev.id ?? index}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.3), ease: "easeOut" }}
+              >
                 <h3>{rev.name}</h3>
-                <p className="stars" style={{ fontSize: '1.2rem', color: '#ffb400' }}>
+                <p className="stars">
                   {Array(rev.rating).fill("★").join("")}
                   {Array(5 - rev.rating).fill("☆").join("")}
                 </p>
@@ -117,91 +175,122 @@ export default function ReviewsPage() {
                     <span className="menu-tag" key={tIndex}>{tag}</span>
                   ))}
                 </div>
-                <p>"{rev.text}"</p>
-              </div>
+                <p>&ldquo;{rev.text}&rdquo;</p>
+              </motion.div>
             ))
           )}
         </div>
 
-        <section className="newsletter-section">
+        <motion.section
+          className="newsletter-section"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+        >
           <h2>Punya Pengalaman Menarik?</h2>
           <p>Bagikan cerita Anda. Masukan Anda membantu kami melayani lebih baik.</p>
-          
+
           <form className="review-form" onSubmit={submitReviewHandler}>
-            <input 
-              type="text" 
-              placeholder="Nama Anda" 
-              required 
+            <input
+              type="text"
+              placeholder="Nama Anda"
+              required
               value={reviewerName}
-              onChange={e => setReviewerName(e.target.value)}
+              onChange={(e) => setReviewerName(e.target.value)}
             />
-            
+
             <div className="star-rating-container" onMouseLeave={() => setHoverRating(rating)}>
               {[1, 2, 3, 4, 5].map((star) => (
-                <span 
+                <motion.span
                   key={star}
-                  className={`star-select ${star <= (hoverRating || rating) ? 'active' : ''}`}
+                  className={`star-select ${star <= (hoverRating || rating) ? "active" : ""}`}
                   onMouseEnter={() => setHoverRating(star)}
                   onClick={() => setRating(star)}
-                  style={{ fontSize: '3.5rem', cursor: 'pointer', transition: 'color 0.2s ease-in-out' }}
+                  whileHover={{ scale: 1.18 }}
+                  whileTap={{ scale: 0.92 }}
                 >
                   ★
-                </span>
+                </motion.span>
               ))}
             </div>
 
-            <p style={{ margin: 0, fontSize: '14px', color: '#555' }}>Pilih Menu Utama (Bisa lebih dari 1):</p>
+            <p className="tag-label">Pilih Menu Utama (Bisa lebih dari 1):</p>
             <div className="tag-selector">
-              {menuUtama.map(tag => (
-                <button 
-                  type="button" 
+              {menuUtama.map((tag) => (
+                <motion.button
+                  type="button"
                   key={tag}
-                  className={`tag-select-btn ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                  whileTap={{ scale: 0.95 }}
+                  className={`tag-select-btn ${selectedTags.includes(tag) ? "selected" : ""}`}
                   onClick={() => toggleTag(tag)}
                 >
                   {tag}
-                </button>
+                </motion.button>
               ))}
             </div>
 
-            <p style={{ margin: 0, fontSize: '14px', color: '#555' }}>Pilih Camilan & Minuman (Bisa lebih dari 1):</p>
+            <p className="tag-label">Pilih Camilan & Minuman (Bisa lebih dari 1):</p>
             <div className="tag-selector">
-              {camilanMinuman.map(tag => (
-                <button 
-                  type="button" 
+              {camilanMinuman.map((tag) => (
+                <motion.button
+                  type="button"
                   key={tag}
-                  className={`tag-select-btn ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                  whileTap={{ scale: 0.95 }}
+                  className={`tag-select-btn ${selectedTags.includes(tag) ? "selected" : ""}`}
                   onClick={() => toggleTag(tag)}
                 >
                   {tag}
-                </button>
+                </motion.button>
               ))}
             </div>
 
-            <textarea 
-              placeholder="Tulis ulasan Anda di sini..." 
-              rows={4} 
-              required 
+            <textarea
+              placeholder="Tulis ulasan Anda di sini..."
+              rows={4}
+              required
               value={reviewText}
-              onChange={e => setReviewText(e.target.value)}
+              onChange={(e) => setReviewText(e.target.value)}
             />
-            <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            <motion.button
+              type="submit"
+              className="submit-btn"
+              disabled={isSubmitting}
+              whileTap={{ scale: 0.98 }}
+            >
               {isSubmitting ? "Menyimpan..." : "Kirim Ulasan"}
-            </button>
+            </motion.button>
           </form>
-        </section>
+        </motion.section>
 
-        {alertMessage && (
-          <div className="custom-alert-overlay" onClick={() => setAlertMessage("")}>
-            <div className="custom-alert-box" onClick={(e) => e.stopPropagation()}>
-              <p>{alertMessage}</p>
-              <button onClick={() => setAlertMessage("")}>Tutup</button>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {alertMessage && (
+            <motion.div
+              className="custom-alert-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setAlertMessage("")}
+            >
+              <motion.div
+                className="custom-alert-box"
+                initial={{ opacity: 0, scale: 0.92, y: -12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -8 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p>{alertMessage}</p>
+                <button onClick={() => setAlertMessage("")}>Tutup</button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
+
       <footer>
-        <p style={{ textAlign: 'center' }}>&copy; 2026 Dapur Senja. All rights reserved.</p>
+        <p>&copy; 2026 Dapur Senja. All rights reserved.</p>
       </footer>
     </>
   );
