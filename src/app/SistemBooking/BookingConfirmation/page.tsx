@@ -51,9 +51,9 @@ export default function BookingConfirmation() {
         setPesan(data.error || "Gagal menyimpan booking");
         return;
       }
-
+      router.push(`/reviews`);
       setSaved(true);
-      setPesan("Booking berhasil disimpan!");
+      setPesan("Booking berhasil!");
 
     } catch {
       setPesan("Tidak bisa terhubung ke server");
