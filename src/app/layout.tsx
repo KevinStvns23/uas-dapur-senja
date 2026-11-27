@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
-import MainNavbar from "./components/MainNavbar";
 
 export const metadata: Metadata = {
     title: "Dapur Senja",
-    description: "Sajian penuh rasa dalam suasana hangat di Dapur Senja.",
+    description: "Website Restaurant Dapur Senja",
 };
 
 export default function RootLayout({
@@ -23,12 +22,11 @@ export default function RootLayout({
                     crossOrigin="anonymous"
                 />
                 <link
-                    href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700&display=swap"
                     rel="stylesheet"
                 />
             </head>
             <body>
-                <MainNavbar />
                 {children}
             </body>
         </html>

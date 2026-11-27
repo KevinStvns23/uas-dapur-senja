@@ -5,6 +5,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import styles from "./page.module.css";
+import MainNavbar from "../components/MainNavbar";
+import SubNavbar from "../components/SubNavbar";
 
 const bestSellers = [
     {
@@ -32,82 +34,90 @@ const bestSellers = [
 
 export default function HomePage() {
     return (
-        <main>
-            {/* Hero / Banner */}
-            <section className={styles.hero}>
-                <Container fluid="xxl" className={styles.heroContainer}>
-                    <div className={styles.heroContent}>
-                        <p className={styles.smallTitle}>SELAMAT DATANG DI</p>
-                        <h1>Dapur Senja</h1>
-                        <p className={styles.heroDescription}>
-                            Sajian penuh rasa dalam suasana hangat yang
-                            menghadirkan pengalaman makan senyaman menikmati
-                            indahnya senja.
-                        </p>
+        <>
+            <MainNavbar />
+            <SubNavbar />
 
-                        <div className={styles.heroButtons}>
-                            <Link href="/menu" className={styles.primaryButton}>
-                                Lihat Menu
-                            </Link>
-                            <Link
-                                href="/reservation"
-                                className={styles.outlineButton}
-                            >
-                                Reservasi
-                            </Link>
-                        </div>
-                    </div>
-                </Container>
-            </section>
+            <div className="page-with-subnavbar">
+                <main>
+                    {/* Hero / Banner */}
+                    <section className={styles.hero}>
+                        <Container fluid="xxl" className={styles.heroContainer}>
+                            <div className={styles.heroContent}>
+                                <p className={styles.smallTitle}>SELAMAT DATANG DI</p>
+                                <h1>Dapur Senja</h1>
+                                <p className={styles.heroDescription}>
+                                    Sajian penuh rasa dalam suasana hangat yang
+                                    menghadirkan pengalaman makan senyaman menikmati
+                                    indahnya senja.
+                                </p>
 
-            {/* Best Seller */}
-            <section className={styles.bestSeller}>
-                <Container fluid="xxl">
-                    <div className={styles.sectionTitle}>
-                        <p>MENU FAVORIT</p>
-                        <h2>Best Seller</h2>
-                        <span>
-                            Beberapa menu yang paling banyak disukai pelanggan
-                            kami.
-                        </span>
-                    </div>
-
-                    <Row className="g-4 justify-content-center">
-                        {bestSellers.map((menu) => (
-                            <Col key={menu.name} xs={12} md={6} lg={4}>
-                                <div className={`card ${styles.menuCard}`}>
-                                    <div className={styles.menuImage}>
-                                        <Image
-                                            src={menu.image}
-                                            alt={menu.alt}
-                                            width={600}
-                                            height={400}
-                                            className={styles.menuImageFile}
-                                        />
-                                    </div>
-
-                                    <div className={`card-body ${styles.menuContent}`}>
-                                        <h5 className="card-title">
-                                            {menu.name}
-                                        </h5>
-
-                                        <p className="card-text">
-                                            {menu.description}
-                                        </p>
-                                    </div>
+                                <div className={styles.heroButtons}>
+                                    <Link href="/menu" className={styles.primaryButton}>
+                                        Lihat Menu
+                                    </Link>
+                                    <Link
+                                        href="/reservation"
+                                        className={styles.outlineButton}
+                                    >
+                                        Reservasi
+                                    </Link>
                                 </div>
-                            </Col>
-                        ))}
-                    </Row>
-                </Container>
-            </section>
+                            </div>
+                        </Container>
+                    </section>
 
-            <footer className={styles.footer}>
-                <p>
-                    © {new Date().getFullYear()} Dapur Senja. All rights
-                    reserved.
-                </p>
-            </footer>
-        </main>
+                    {/* Best Seller */}
+                    <section className={styles.bestSeller}>
+                        <Container fluid="xxl">
+                            <div className={styles.sectionTitle}>
+                                <p>MENU FAVORIT</p>
+                                <h2>Best Seller</h2>
+                                <span>
+                                    Beberapa menu yang paling banyak disukai pelanggan
+                                    kami.
+                                </span>
+                            </div>
+
+                            <Row className="g-4 justify-content-center">
+                                {bestSellers.map((menu) => (
+                                    <Col key={menu.name} xs={12} md={6} lg={4}>
+                                        <div className={`card ${styles.menuCard}`}>
+                                            <div className={styles.menuImage}>
+                                                <Image
+                                                    src={menu.image}
+                                                    alt={menu.alt}
+                                                    width={600}
+                                                    height={400}
+                                                    className={styles.menuImageFile}
+                                                />
+                                            </div>
+
+                                            <div className={`card-body ${styles.menuContent}`}>
+                                                <h5 className="card-title">
+                                                    {menu.name}
+                                                </h5>
+
+                                                <p className="card-text">
+                                                    {menu.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </Container>
+                    </section>
+
+                    <footer className={styles.footer}>
+                        <p>
+                            © {new Date().getFullYear()} Dapur Senja. All rights
+                            reserved.
+                        </p>
+                    </footer>
+                </main>
+            </div>
+        </>
+        
     );
 }
