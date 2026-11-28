@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import styles from "./reservasi.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/app/globals.css";
+import MainNavbar from "@/app/components/MainNavbar";
 
 export default function Reservasi() {
   const router = useRouter();
