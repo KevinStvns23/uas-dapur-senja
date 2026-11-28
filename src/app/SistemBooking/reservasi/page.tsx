@@ -44,6 +44,7 @@ export default function Reservasi() {
 
   return (
     <>
+    <MainNavbar />
     <div className={styles.page}>
       <Image src="/img/resto.jpg" alt="" fill style={{ objectFit: "cover", zIndex: -1 }} priority />
       <div className={styles.card}>
