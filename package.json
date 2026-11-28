@@ -8,10 +8,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
     "better-sqlite3": "^13.2.0",
     "bootstrap": "^5.3.9",
     "next": "16.4.5",
+    "postcss": "^8.5.32",
     "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwindcss": "^4.3.5"
     "react-bootstrap": "^2.10.10",
     "react-dom": "19.3.0"
   },
