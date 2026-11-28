@@ -64,6 +64,7 @@ export default function BookingConfirmation() {
 
   return (
     <>
+      <MainNavbar />
       <main className={styles.booking}>
         <div className={styles.page}>
           <div className={styles.logoCentang}>
