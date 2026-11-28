@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./bookingConfirmation.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import MainNavbar from "@/app/components/MainNavbar";
 
 export default function BookingConfirmation() {
   const router = useRouter();
