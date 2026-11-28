@@ -57,7 +57,7 @@ export default function HomePage() {
                                         Lihat Menu
                                     </Link>
                                     <Link
-                                        href="/reservation"
+                                        href="/SistemBooking/reservasi"
                                         className={styles.outlineButton}
                                     >
                                         Reservasi
