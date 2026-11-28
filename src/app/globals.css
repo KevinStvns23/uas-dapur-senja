@@ -139,3 +139,61 @@ body {
         padding-top: 45px;
     }
 }
+
+.sub-nav-link:hover,
+.sub-nav-link.active {
+    color: #f28c00;
+    border-bottom-color: #f28c00;
+}
+
+/* Jarak konten setelah navbar kedua */
+.page-with-subnavbar {
+    padding-top: 48px;
+}
+
+@media (max-width: 991.98px) {
+    .main-navbar {
+        height: auto;
+        min-height: 65px;
+    }
+
+    .main-navbar .container-xxl {
+        min-height: 65px;
+    }
+
+    .main-navbar .brand-logo {
+        font-size: 1.8rem;
+    }
+
+    .main-navbar .navbar-nav {
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 0 12px;
+    }
+
+    .main-navbar .nav-link {
+        padding: 12px 0;
+        border-top: 1px solid #eee;
+    }
+
+    .sub-navbar {
+        top: 65px;
+        height: 45px;
+    }
+
+    .sub-nav-menu {
+        gap: 25px;
+    }
+
+    .sub-nav-link {
+        font-size: 13px;
+    }
+
+    body {
+        padding-top: 65px;
+    }
+
+    .page-with-subnavbar {
+        padding-top: 45px;
+    }
+}
