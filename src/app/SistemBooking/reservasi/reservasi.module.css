@@ -1,0 +1,216 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow-x: hidden; 
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("/img/resto.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.card {
+    position: relative; 
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 32px;
+    border-radius: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.titleLogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.logo {
+    display: block;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    margin: 0 auto;
+    flex-shrink: 0;
+    margin: -80px auto -80px;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 70%;
+    width: 150px;
+    height: 160px;
+    background-image: url("/img/desain_samping_kiri.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top left;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@media (max-width: 800px) {
+    .card::before {
+        display: none;
+    }
+}
+
+.title {
+    margin: -30px 0 24px;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.main-navbar {
+    background-color: #4b2e1f;
+    padding: 15px 0;
+}
+
+.main-navbar .navbar-brand,
+.main-navbar .nav-link {
+    color: white;
+}
+
+.main-navbar .nav-link:hover {
+    color: #f4b183;
+}
+
+.brand-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.inputReservasi {
+    position: relative;
+    width: 100%;
+    padding: 15px 17px;
+    font-size: 16px;
+    border: 1.5px solid #ccc !important;
+    border-radius: 10px !important;
+    background-color: white;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+.inputReservasi:focus {
+    outline: none;
+    border-color: #c2410c !important;
+}
+
+.inputWithIcon,
+.inputWithCalendar,
+.inputWithTime,
+.inputWithPeople,
+.inputWithCalCheck,
+.circleX {
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    background-size: 22px 22px;
+    padding-left: 52px;
+}
+
+.inputWithIcon { 
+    background-image: url("/img/person.png"); 
+}
+
+.inputWithCalendar { 
+    background-image: url("/img/calendar.png"); 
+}
+.inputWithTime { 
+    background-image: url("/img/time.png"); 
+}
+
+.inputWithPeople { 
+    background-image: url("/img/people.png"); 
+}
+
+.inputWithCalCheck { 
+    background-image: url("/img/calendar-check_brown.png"); 
+}
+
+.circleX { 
+    background-image: url("/img/circle-x.png"); 
+}
+
+.inputReservasi::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.inputReservasi::-webkit-inner-spin-button,
+.inputReservasi::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inputReservasi[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.submit,
+.cancel {
+    flex: 1;
+    padding: 12px;
+    border: 3px solid brown;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.submit {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: brown;
+}
+
+.submit:hover:not(:disabled) {
+    background-color: brown;
+    color: white;
+}
+
+.cancel {
+    background-color: orangered;
+    border-color: orangered;
+    color: white;
+}
+
+.cancel:hover:not(:disabled) {
+    background-color: darkred;
+    border-color: darkred;
+}
+
+.submit:disabled,
+.cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

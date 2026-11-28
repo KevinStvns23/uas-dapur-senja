@@ -1,0 +1,260 @@
+.aboutPage {
+    color: #333;
+}
+
+/* Header About Us */
+.aboutHeader {
+    padding: 65px 0 55px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.aboutLabel {
+    margin-bottom: 8px;
+    color: #f28c00;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.aboutHeader h1 {
+    margin-bottom: 12px;
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.headerDescription {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Sejarah Restoran */
+.historySection {
+    padding: 75px 0;
+    background-color: #f8f8f8;
+}
+
+.historyText {
+    max-width: 720px;
+}
+
+.sectionLabel {
+    margin-bottom: 8px;
+    color: #f28c00;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.historyText h2 {
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.historyText p:not(.sectionLabel) {
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.historyBox {
+    min-height: 230px;
+    padding: 25px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #fff0dc, #f8c36a);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.historyBox span {
+    margin-bottom: 10px;
+    color: #8b4a18;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.historyBox p {
+    margin: 0;
+    color: #704214;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/* Judul section */
+.sectionTitle {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.sectionTitle > p {
+    margin-bottom: 8px;
+    color: #f28c00;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sectionTitle h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.sectionTitle span {
+    color: #666;
+    font-size: 15px;
+}
+
+/* Visi dan Misi */
+.visionSection {
+    padding: 75px 0;
+    background-color: #fff;
+}
+
+.valueCard {
+    height: 100%;
+    padding: 28px;
+    border-radius: 12px;
+    background-color: #f8f8f8;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.valueIcon {
+    margin-bottom: 12px;
+    font-size: 42px;
+}
+
+.valueCard h3 {
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.valueCard p {
+    margin-bottom: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Foto Restoran */
+.gallerySection {
+    padding: 75px 0;
+    background-color: #f8f8f8;
+}
+
+.restaurantPhoto {
+    height: 230px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #9d6b3d, #4b2d18);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+}
+
+.photoImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Chef dan Team */
+.teamSection {
+    padding: 75px 0;
+    background-color: #fff;
+}
+
+.teamCard {
+    height: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+    text-align: center;
+}
+
+.teamPhoto {
+    height: 250px;
+    overflow: hidden;
+    background-color: #fff0dc;
+}
+
+.teamImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.teamInfo {
+    padding: 18px 15px 22px;
+}
+
+.teamInfo h3 {
+    margin-bottom: 6px;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.teamInfo p {
+    margin-bottom: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+/* Footer */
+.footer {
+    padding: 20px;
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .aboutHeader {
+        padding: 50px 0 45px;
+    }
+
+    .aboutHeader h1 {
+        font-size: 34px;
+    }
+
+    .historySection,
+    .visionSection,
+    .gallerySection,
+    .teamSection {
+        padding: 55px 0;
+    }
+
+    .historyText h2 {
+        font-size: 28px;
+    }
+
+    .historyBox {
+        min-height: 190px;
+    }
+
+    .restaurantPhoto {
+        height: 230px;
+    }
+
+    .teamPhoto {
+        height: 260px;
+    }
+}
